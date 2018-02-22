@@ -2,19 +2,13 @@ import numpy as np
 from collections import Counter
 
 class Hand:
-	def __init__(self, deck_name = "none", f_rmat = "constructed"):
+	def __init__(self, deck_name = "none"):
 		if deck_name != "none":
 			self.deck, self.decklist = self.process(deck_name)
 		else:
 			self.deck = ["Storm Crow"] * 60
 			self.decklist = Counter(deck)
 
-		if f_rmat == "constructed":
-			self.deck_len = 60
-		if f_rmat == "limited":
-			self.deck_len = 40
-
-		assert(len(self.deck) == self.deck_len)
 		self.new_hand(7)
 
 	def process(self, filename):
@@ -30,33 +24,26 @@ class Hand:
 		if isinstance(new_deck, list):
 			self.deck = new_deck
 			self.decklist = Counter(new_deck)
-			assert(len(self.deck) == self.deck_len)
 		elif isinstance(new_deck, dict):
 			deck = []
 			for card, number in new_deck.items():
 				deck += [card] * int(number)
 			self.deck = deck
 			self.decklist = Counter(new_deck)
-			assert(len(self.deck) == self.deck_len)
 		elif isinstance(new_deck, str):
 			self.deck, self.decklist = self.process(new_deck)
-			assert(len(self.deck) == self.deck_len)
 		else:
 			print("ERROR: invalid deck format")
 			return False
 		return True
 
-	def set_decklist(self, new_deck):
-		self.set_deck(new_deck)
-
 	def get_deck(self):
 		return self.deck.copy()
 
 	def get_decklist(self):
-		return self.decklist.copy()
+		return dict(self.decklist.copy())
 
 	def new_hand(self, size = 7):
-		assert(size <= len(self.deck))
 		draws = np.random.choice(len(self.deck),size,replace = False)
 		self.card_counts = Counter([self.deck[i] for i in draws])
 		self.cards = set(self.card_counts.keys())

@@ -1,3 +1,5 @@
+This is outdated. I'll update it over the weekend maybe. 
+
 # hand-simulator
 
 ## Usage

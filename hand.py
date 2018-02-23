@@ -8,7 +8,7 @@ class Hand:
 			self.deck, self.decklist = self.process(deck_name)
 		else:
 			self.deck = ["Storm Crow"] * 60
-			self.decklist = Counter(deck)
+			self.decklist = dict(Counter(deck))
 
 		self.new_hand(7)
 
@@ -18,19 +18,19 @@ class Hand:
 		deck = []
 		for [number, card] in file_read:
 			deck += [card] * int(number)
-		decklist = Counter(deck)
+		decklist = dict(Counter(deck))
 		return deck, decklist
 
 	def set_deck(self, new_deck):
 		if isinstance(new_deck, list):
 			self.deck = new_deck
-			self.decklist = Counter(new_deck)
+			self.decklist = dict(Counter(new_deck))
 		elif isinstance(new_deck, dict):
 			deck = []
 			for card, number in new_deck.items():
 				deck += [card] * int(number)
 			self.deck = deck
-			self.decklist = Counter(new_deck)
+			self.decklist = dict(Counter(new_deck))
 		elif isinstance(new_deck, str):
 			self.deck, self.decklist = self.process(new_deck)
 		else:

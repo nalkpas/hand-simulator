@@ -2,16 +2,16 @@ import numpy as np
 from hand import Hand
 
 # hyperparameters
-iterations_per = 2
+iterations_per = 500
 epsilon = 10**-8 # offset to prevent division from blowing up
 # R, B, U
 lambd_colors = (1., 17./21, 13./21)
 # Summit, Catacombs
 lambd_checks = (0.4, 0.4)
 # value of drawing Field of Ruin
-lambd_field = 0.01
+lambd_field = 0.035
 # penalty for drawing tapped lands (ie. cycling lands)
-lamdb_tapped = 0.225
+lamdb_tapped = 0.5
 # hand sizes
 starting_size = 8 #inclusive
 mullto = 6	#inclusive
@@ -52,7 +52,7 @@ for mtn_ct in range(0,6):
 									config = {"Mountain":mtn_ct, "Swamp":swamp_ct, "Island":island_ct, "Dragonskull Summit":summit_ct, 
 									          "Drowned Catacomb":combs_ct, "Field of Ruin":field_ct, "Canyon Slough":slough_ct,
 									          "Fetid Pools":pool_ct, "Spirebluff Canal": bluff_ct, "Aether Hub": hub_ct}
-									new_decklist = hand.get_decklist()
+									new_decklist = hand.decklist
 									new_decklist.update(config)
 									hand.set_deck(new_decklist)
 
@@ -77,8 +77,8 @@ for mtn_ct in range(0,6):
 											has_summit = hand.contains("Dragonskull Summit")
 											has_combs = hand.contains("Drowned Catacomb")
 
-											tapped_summit = has_summit and not (has_mountain or has_swamp)
-											tapped_combs = has_combs and not (has_swamp or has_island)
+											tapped_summit = min(has_summit,max(has_mountain, has_swamp))
+											tapped_combs = min(has_combs,max(has_swamp, has_island))
 
 											bools = [0, 0, 0, tapped_summit, tapped_combs, 0, 0]
 											counts = [0, 0, 0, has_summit, has_combs, 0, 0]
@@ -94,9 +94,24 @@ for mtn_ct in range(0,6):
 									key = (mtn_ct, swamp_ct, island_ct, summit_ct, combs_ct, field_ct, slough_ct, pool_ct, bluff_ct, hub_ct)
 									results[utility] = key
 
-top_utilties = sorted(results.keys(), key=lambda v:-v)[:10]
+print("Order of lands:")
 for land in lands:
 	print(str(land) + ", ", end="")
-print("")
-for utility in top_utilties:
+
+sorted_results = sorted(results.keys(), key=lambda v:-v)
+top_ten = sorted_results[:10]
+print("\n\nTop ten configurations:")
+for utility in top_ten:
 	print(str(results[utility]) + "\t" + str(utility))
+
+print("\nAverage of top twenty:")
+top_twenty = sorted_results[:20]
+avg = np.zeros(len(lands), dtype=float)
+for utility in top_twenty:
+	avg += np.array(results[utility], dtype=float)
+avg = avg / 20
+print(avg)
+
+
+
+

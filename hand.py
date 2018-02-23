@@ -1,5 +1,6 @@
 import numpy as np
 from collections import Counter
+import scipy.stats as sps
 
 class Hand:
 	def __init__(self, deck_name = "none"):
@@ -13,7 +14,7 @@ class Hand:
 
 	def process(self, filename):
 		file = open(filename,"r")
-		file_read = [str.strip(line).split(" ", 1) for line in file if len(line.split()) > 0]
+		file_read = [line.strip().split(" ", 1) for line in file if len(line.split()) > 0]
 		deck = []
 		for [number, card] in file_read:
 			deck += [card] * int(number)
@@ -62,11 +63,22 @@ class Hand:
 		return float(sum(check) >= 3)
 
 	def contains(self,cards):
-		if type(cards) is str:
+		if isinstance(cards, str):
 			return 1.0*(cards in self.cards)
 		return float(len(self.cards & set(cards)) > 0)
 
 	def count_of(self,cards):
-		if type(cards) is str:
+		if isinstance(cards, str):
 			return float(self.card_counts[cards])
 		return float(sum([self.card_counts[card] for card in cards]))
+
+	def expect(self,cards,size = 7):
+		if isinstance(cards, str):
+			n = self.decklist[cards]
+		elif isinstance(cards, list):
+			n = sum([self.decklist[card] for card in cards])
+		else: 
+			return 0
+		if n == 0: return 0
+		return sps.hypergeom.mean(len(self.deck),n,size)
+

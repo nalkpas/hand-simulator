@@ -1,6 +1,5 @@
 import numpy as np
 from hand import Hand
-import pdb
 
 # hyperparameters
 iterations_per = 3000

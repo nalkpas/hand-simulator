@@ -13,8 +13,8 @@ class Hand:
 		self.new_hand(7)
 
 	def process(self, filename):
-		file = open(filename,"r")
-		file_read = [line.strip().split(" ", 1) for line in file if len(line.split()) > 0]
+		with open(filename,"r") as file:
+			file_read = [line.strip().split(" ", 1) for line in file if len(line.split()) > 0]
 		deck = []
 		for [number, card] in file_read:
 			deck += [card] * int(number)

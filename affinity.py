@@ -3,23 +3,20 @@ from hand import Hand
 
 iterations = 250000
 starting_size = 8 #inclusive
-mullto = 5	#not inclusive
+mullto = 7	#inclusive
 hand = Hand("decklists/affinity.txt")
 hand_types = ["t1 2-drop", "t1 3-drop"]
 hand_counts = np.zeros(((starting_size + 1) - mullto,len(hand_types)))
 totals = np.zeros(((starting_size + 1) - mullto,1))
-fail_count = 0
 
 zero_creatures = ["Memnite", "Ornithopter"]
-zero_others = ["Darksteel Citadel", "Welding Jar"]
+zero_others = "Welding Jar"
 ones = ["Signal Pest", "Vault Skirge"]
 twos = ["Arcbound Ravager", "Cranial Plating", "Steel Overseer"]
 threes = ["Etched Champion", "Master of Etherium"]
-lands = ["Darksteel Citadel", "Spire of Industry", "Glimmervoid", "Inkmoth Nexus", "Blinkmoth Nexus"]
+lands = ["Darksteel Citadel", "Spire of Industry", "Glimmervoid", "Inkmoth Nexus", "Blinkmoth Nexus", "Island"]
 
 for i in range(iterations):
-	flag = False
-	early_flag = False
 	for j in range(0,(starting_size + 1) - mullto):
 		hand.new_hand(starting_size - j)
 
@@ -27,7 +24,7 @@ for i in range(iterations):
 		count_lands = hand.count_of(lands)
 		has_drum = hand.contains("Springleaf Drum")
 		count_zero_creatures = hand.count_of(zero_creatures)
-		count_zeros = count_zero_creatures + hand.count_of(zero_others)
+		count_zeros = count_zero_creatures + hand.count_of(zero_others) + hand.contains("Darksteel Citadel")
 		count_ones = hand.count_of(ones) + has_drum * 1
 		has_two = hand.contains(twos)
 		has_three = hand.contains(threes)

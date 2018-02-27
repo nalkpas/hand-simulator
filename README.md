@@ -2,7 +2,7 @@
 
 ## Usage
 
-__hand.py__ contains a Hand class that accepts a filename as input, generates a deck from the given file, and generates hands from that deck. It supports four functions:
+__hand.py__ contains a Hand class that accepts a filename as input, generates a deck from the given file, and generates hands from that deck. It supports several functions:
 
 ### new_hand(size)
 

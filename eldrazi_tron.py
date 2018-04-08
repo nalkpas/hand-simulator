@@ -31,7 +31,7 @@ for i in range(iterations):
 
 		t3_TKS = has_TKS * (((has_Map or (temples > 0)) * (lands >= 2)) or (has_Stone * (lands >= 3)))
 		# tron, Chalice + lands, t3 TKS, t2 Reshaper, 2 temples and any spell
-		results = np.array([tron, has_Chalice * (lands >= 2), t3_TKS, has_Reshaper * (temples > 0) * (lands >= 2), (temples + has_Map >= 2) * (lands < (7 - j))])
+		results = np.array([tron, has_Chalice * (lands >= 2), t3_TKS, has_Reshaper * (temples > 0) * (lands >= 2), (temples + has_Map*(lands >= 2) >= 2) * (lands < (7 - j))])
 		good_counts[starting_size - j - mullto] += (np.sum(results) > 0)
 		hand_counts[starting_size - j - mullto,:] += results
 		totals[starting_size - j - mullto] += 1

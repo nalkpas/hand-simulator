@@ -3,14 +3,12 @@ from collections import Counter
 import scipy.stats as sps
 
 class Hand:
-	def __init__(self, deck_name = "none"):
-		if deck_name != "none":
+	def __init__(self, deck_name):
+		if deck_name:
 			self.deck, self.decklist = self.process(deck_name)
 		else:
 			self.deck = ["Storm Crow"] * 60
 			self.decklist = dict(Counter(deck))
-
-		self.new_hand(7)
 
 	def process(self, filename):
 		with open(filename,"r") as file:

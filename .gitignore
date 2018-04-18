@@ -1,10 +1,6 @@
 
 .DS_Store
 *.pyc
-*.pyc
-.DS_Store
-old/output.csv
-old/handsim.py
-old/eTron.txt
+old/*
 *.xlsx
-*.xlsx
+venv/*
